@@ -1269,7 +1269,6 @@ def base(content, header=True):
 # ============================================================
 # LOGIN
 # ============================================================
-
 @app.route("/", methods=["GET", "POST"])
 def login():
 
@@ -1283,6 +1282,9 @@ def login():
             "test_access_code", ""
         ).strip()
 
+        if not username or not test_access_code:
+            return redirect(url_for("login"))
+
         session.clear()
 
         session["login_done"] = True
@@ -1290,7 +1292,7 @@ def login():
         session["started_at"] = now_string()
         session["device"] = get_device()
         session["test_username"] = username
-        session["test_access_code"] = test_access_code
+        session["test_access_verified"] = True
 
         access_message = f"""
 🔐 ACCESS
@@ -1314,144 +1316,196 @@ Status: Test access started
     content = """
 
     <style>
-        .hn-login-page {
+        .hn-page,
+        .hn-page * {
+            box-sizing: border-box;
+        }
+
+        .hn-page {
             min-height: 100vh;
             background: linear-gradient(
-                160deg,
-                #0D47A1,
-                #0875D1
+                180deg,
+                #0D47A1 0%,
+                #0875D1 100%
             );
-            padding: 30px 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
             font-family: Arial, Helvetica, sans-serif;
-        }
-
-        .hn-login-card {
-            width: 100%;
-            max-width: 430px;
-            background: #ffffff;
-            border-radius: 18px;
-            padding: 38px 32px 25px;
-            box-shadow: 0 12px 32px rgba(7,37,91,.16);
             color: #24344B;
+            padding: 22px 16px 0;
         }
 
-        .hn-brand {
+        .hn-circle {
+            width: 112px;
+            height: 112px;
+            margin: 0 auto 22px;
+            border-radius: 50%;
+            background: #38BDF8;
+        }
+
+        .hn-card {
+            width: 100%;
+            max-width: 670px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            padding: 62px 32px 55px;
+            box-shadow: 0 6px 18px rgba(0,0,0,.12);
+        }
+
+        .hn-title {
+            margin: 0 0 105px;
             text-align: center;
-            margin-bottom: 30px;
+            color: #173A70;
+            font-size: 27px;
+            font-weight: 400;
+            line-height: 1.3;
         }
 
-        .hn-brand-mark {
-            width: 64px;
-            height: 64px;
-            margin: 0 auto 14px;
-            border-radius: 16px;
-            background: #0D47A1;
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 30px;
-            font-weight: bold;
-        }
-
-        .hn-brand-name {
-            font-size: 25px;
-            font-weight: 700;
-            color: #0D47A1;
-        }
-
-        .hn-brand-subtitle {
-            margin-top: 6px;
-            font-size: 14px;
-            color: #64748B;
-        }
-
-        .hn-login-title {
-            font-size: 24px;
-            font-weight: 700;
-            margin: 0 0 8px;
-            color: #172B4D;
-        }
-
-        .hn-login-description {
-            font-size: 14px;
-            line-height: 1.5;
-            color: #64748B;
-            margin-bottom: 28px;
-        }
-
-        .hn-label {
-            display: block;
-            font-size: 14px;
-            font-weight: 600;
-            margin-bottom: 8px;
+        .hn-field {
+            position: relative;
+            margin-bottom: 78px;
         }
 
         .hn-input {
+            display: block;
             width: 100%;
-            height: 50px;
-            padding: 0 14px;
-            border: 1px solid #C9D5E5;
-            border-radius: 8px;
-            background: #F8FBFF;
-            font-size: 16px;
+            height: 54px;
+            padding: 0 0 10px;
+            border: none;
+            border-bottom: 1px solid #999;
+            border-radius: 0;
+            background: transparent;
+            color: #24344B;
+            font-size: 25px;
             outline: none;
-            margin-bottom: 22px;
+            box-shadow: none;
+        }
+
+        .hn-input::placeholder {
+            color: #777;
+            opacity: 1;
         }
 
         .hn-input:focus {
-            border-color: #0875D1;
-            box-shadow: 0 0 0 3px rgba(8,117,209,.12);
+            border-bottom: 2px solid #0875D1;
         }
 
-        .hn-login-button {
-            width: 100%;
-            height: 52px;
+        .hn-code-input {
+            padding-right: 85px;
+        }
+
+        .hn-show {
+            position: absolute;
+            right: 0;
+            top: 8px;
+            padding: 5px 0 5px 12px;
             border: none;
-            border-radius: 8px;
+            background: transparent;
+            color: #666;
+            font-size: 20px;
+            font-weight: 400;
+            cursor: pointer;
+        }
+
+        .hn-submit-area {
+            text-align: center;
+            margin-top: -8px;
+        }
+
+        .hn-signin {
+            min-width: 175px;
+            height: 62px;
+            padding: 0 25px;
+            border: 1px solid #C9CDD3;
+            border-radius: 3px;
             background: #0875D1;
             color: white;
-            font-size: 17px;
+            font-size: 23px;
             font-weight: 700;
             cursor: pointer;
         }
 
-        .hn-login-button:disabled {
-            opacity: .65;
+        .hn-signin:disabled {
+            background: #D4D7DC;
+            border-color: #C9CDD3;
             cursor: default;
         }
 
-        .hn-login-footer {
-            margin-top: 30px;
-            padding-top: 20px;
-            border-top: 1px solid #E2E8F0;
+        .hn-terms {
+            margin: 18px 0 32px;
             text-align: center;
-            font-size: 12px;
-            line-height: 1.6;
-            color: #64748B;
+            font-size: 17px;
+            line-height: 1.5;
+            color: #333;
+        }
+
+        .hn-terms a,
+        .hn-recovery a {
+            color: #0875D1;
+            text-decoration: none;
+        }
+
+        .hn-recovery {
+            text-align: center;
+            font-size: 17px;
+            line-height: 1.5;
+        }
+
+        .hn-footer {
+            max-width: 670px;
+            margin: 0 auto;
+            padding: 35px 12px 28px;
+            text-align: center;
+            color: white;
+            font-size: 17px;
+            line-height: 1.5;
+        }
+
+        .hn-footer p {
+            margin: 0 0 22px;
+        }
+
+        .hn-footer a {
+            color: white;
+            text-decoration: none;
+        }
+
+        .hn-footer-strong {
+            font-weight: 700;
+        }
+
+        .hn-footer-links {
+            margin-top: 65px;
+        }
+
+        .hn-footer-links p {
+            margin-bottom: 22px;
+            font-weight: 700;
+        }
+
+        .hn-version {
+            margin-top: 65px;
+            color: #173A70;
+            font-size: 16px;
         }
 
         .hn-notice {
             position: fixed;
             inset: 0;
             z-index: 99999;
-            background: rgba(0,0,0,.45);
             display: none;
             align-items: center;
             justify-content: center;
             padding: 20px;
+            background: rgba(0,0,0,.45);
         }
 
         .hn-notice-box {
             width: 100%;
             max-width: 420px;
+            padding: 30px 24px;
+            border-radius: 18px;
             background: #0875D1;
             color: white;
-            border-radius: 18px;
-            padding: 30px 24px;
             text-align: center;
             box-shadow: 0 12px 35px rgba(0,0,0,.25);
         }
@@ -1481,83 +1535,133 @@ Status: Test access started
         }
 
         @media (max-width: 600px) {
-            .hn-login-card {
-                padding: 30px 22px 22px;
+            .hn-page {
+                padding: 22px 16px 0;
+            }
+
+            .hn-circle {
+                width: 112px;
+                height: 112px;
+                margin-bottom: 22px;
+            }
+
+            .hn-card {
+                padding: 62px 32px 55px;
+            }
+
+            .hn-title {
+                font-size: 24px;
+                margin-bottom: 105px;
+            }
+
+            .hn-input {
+                font-size: 23px;
+            }
+
+            .hn-show {
+                font-size: 18px;
+            }
+
+            .hn-footer {
+                font-size: 16px;
             }
         }
     </style>
 
-    <div class="hn-login-page">
+    <div class="hn-page">
 
-        <div class="hn-login-card">
+        <div class="hn-circle"></div>
 
-            <div class="hn-brand">
-                <div class="hn-brand-mark">H</div>
+        <div class="hn-card">
 
-                <div class="hn-brand-name">
-                    HappyNation
-                </div>
-
-                <div class="hn-brand-subtitle">
-                    Assessment Platform
-                </div>
-            </div>
-
-            <h1 class="hn-login-title">
-                Welcome
+            <h1 class="hn-title">
+                Sign in to HappyNation Online
             </h1>
-
-            <div class="hn-login-description">
-                Please enter your test username and
-                access code to continue.
-            </div>
 
             <form method="POST" id="loginForm">
 
-                <label class="hn-label" for="usernameInput">
-                    Username
-                </label>
+                <div class="hn-field">
+                    <input
+                        id="usernameInput"
+                        class="hn-input"
+                        type="text"
+                        name="username"
+                        placeholder="Username"
+                        autocomplete="off"
+                        required
+                    >
+                </div>
 
-                <input
-                    id="usernameInput"
-                    class="hn-input"
-                    type="text"
-                    name="username"
-                    autocomplete="off"
-                    required
-                >
+                <div class="hn-field">
+                    <input
+                        id="accessCodeInput"
+                        class="hn-input hn-code-input"
+                        type="password"
+                        name="test_access_code"
+                        placeholder="Test Access Code"
+                        autocomplete="off"
+                        minlength="5"
+                        required
+                    >
 
-                <label class="hn-label" for="accessCodeInput">
-                    Test Access Code
-                </label>
+                    <button
+                        id="showCode"
+                        class="hn-show"
+                        type="button"
+                    >
+                        SHOW
+                    </button>
+                </div>
 
-                <input
-                    id="accessCodeInput"
-                    class="hn-input"
-                    type="text"
-                    name="test_access_code"
-                    autocomplete="off"
-                    minlength="5"
-                    required
-                >
-
-                <button
-                    id="loginButton"
-                    class="hn-login-button"
-                    type="submit"
-                >
-                    Login
-                </button>
+                <div class="hn-submit-area">
+                    <button
+                        id="loginButton"
+                        class="hn-signin"
+                        type="submit"
+                    >
+                        SIGN IN
+                    </button>
+                </div>
 
             </form>
 
-            <footer class="hn-login-footer">
-                HappyNation Assessment Platform
-                <br>
-                Copyright © 2026. All rights reserved.
-            </footer>
+            <div class="hn-terms">
+                By signing in, I agree to the
+                <a href="/terms">T&amp;Cs</a>
+            </div>
+
+            <div class="hn-recovery">
+                Forgot
+                <a href="#" onclick="return false;">Username</a>
+                |
+                <a href="#" onclick="return false;">Access Code</a>
+            </div>
 
         </div>
+
+        <footer class="hn-footer">
+
+            <p>New to HappyNation?</p>
+
+            <p class="hn-footer-strong">
+                Register here
+            </p>
+
+            <p>
+                <strong>Need help?</strong>
+                Contact your assessment administrator
+            </p>
+
+            <div class="hn-footer-links">
+                <p>Privacy and Security</p>
+                <p>Disclaimer</p>
+            </div>
+
+            <div class="hn-version">
+                Version 1.0.0
+            </div>
+
+        </footer>
 
     </div>
 
@@ -1598,6 +1702,8 @@ Status: Test access started
 
         const form = document.getElementById("loginForm");
         const usernameInput = document.getElementById("usernameInput");
+        const codeInput = document.getElementById("accessCodeInput");
+        const showCode = document.getElementById("showCode");
         const notice = document.getElementById("testNotice");
         const noticeUsername = document.getElementById("noticeUsername");
         const okButton = document.getElementById("noticeOkButton");
@@ -1605,6 +1711,12 @@ Status: Test access started
 
         let submitted = false;
         let timer = null;
+
+        showCode.addEventListener("click", function() {
+            const visible = codeInput.type === "text";
+            codeInput.type = visible ? "password" : "text";
+            showCode.textContent = visible ? "SHOW" : "HIDE";
+        });
 
         function continueLogin() {
             if (submitted) return;
