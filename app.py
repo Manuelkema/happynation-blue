@@ -1316,258 +1316,131 @@ Status: Test access started
     content = """
 
     <style>
-        .hn-page,
-        .hn-page * {
-            box-sizing: border-box;
-        }
+        /* LOGIN FIXO E PROPORCIONAL */
 
-        .hn-page {
-    min-height: 100vh;
-    width: 100%;
-    overflow-x: hidden;
-    background: linear-gradient(
-        180deg,
-        #0D47A1 0%,
-        #0875D1 100%
-    );
-    font-family: Arial, Helvetica, sans-serif;
-    color: #24344B;
-    padding: 22px 16px 0;
+.hn-page {
+    position: fixed;
+    top: 0;
+    left: 50%;
+    width: 390px;
+    min-height: 0;
+    height: auto;
+    padding: 12px 16px 0;
+    overflow: visible;
+    transform-origin: top center;
+    transform: translateX(-50%) scale(var(--hn-scale, 1));
 }
 
-        .hn-circle {
-            width: 112px;
-            height: 112px;
-            margin: 0 auto 22px;
-            border-radius: 50%;
-            background: #38BDF8;
-        }
+.hn-circle {
+    width: 58px;
+    height: 58px;
+    margin: 0 auto 12px;
+}
 
-        .hn-card {
+.hn-card {
     width: 100%;
-    max-width: 670px;
-    margin: 0 auto;
-    background: white;
-    border-radius: 12px;
-    padding: 62px 32px 55px;
-    box-shadow: 0 6px 18px rgba(0,0,0,.12);
-        }
+    max-width: none;
+    margin: 0;
+    padding: 30px 16px 26px;
+    border-radius: 7px;
+}
 
-        .hn-title {
-            margin: 0 0 105px;
-            text-align: center;
-            color: #173A70;
-            font-size: 27px;
-            font-weight: 400;
-            line-height: 1.3;
-        }
+.hn-title {
+    font-size: 18px;
+    margin: 0 0 52px;
+    line-height: 1.3;
+}
 
-        .hn-field {
-            position: relative;
-            margin-bottom: 78px;
-        }
+.hn-field {
+    margin-bottom: 38px;
+}
 
-        .hn-input {
-            display: block;
-            width: 100%;
-            height: 54px;
-            padding: 0 0 10px;
-            border: none;
-            border-bottom: 1px solid #999;
-            border-radius: 0;
-            background: transparent;
-            color: #24344B;
-            font-size: 25px;
-            outline: none;
-            box-shadow: none;
-        }
+.hn-input {
+    height: 42px;
+    padding-bottom: 7px;
+    font-size: 18px;
+}
 
-        .hn-input::placeholder {
-            color: #777;
-            opacity: 1;
-        }
+.hn-show {
+    top: 5px;
+    font-size: 15px;
+}
 
-        .hn-input:focus {
-            border-bottom: 2px solid #0875D1;
-        }
+.hn-submit-area {
+    margin-top: -4px;
+}
 
-        .hn-code-input {
-            padding-right: 85px;
-        }
+.hn-signin {
+    min-width: 100px;
+    height: 38px;
+    padding: 0 15px;
+    font-size: 16px;
+}
 
-        .hn-show {
-            position: absolute;
-            right: 0;
-            top: 8px;
-            padding: 5px 0 5px 12px;
-            border: none;
-            background: transparent;
-            color: #666;
-            font-size: 20px;
-            font-weight: 400;
-            cursor: pointer;
-        }
+.hn-terms {
+    margin: 12px 0 22px;
+    font-size: 13px;
+}
 
-        .hn-submit-area {
-            text-align: center;
-            margin-top: -8px;
-        }
+.hn-recovery {
+    font-size: 13px;
+}
 
-        .hn-signin {
-            min-width: 175px;
-            height: 62px;
-            padding: 0 25px;
-            border: 1px solid #C9CDD3;
-            border-radius: 3px;
-            background: #0875D1;
-            color: white;
-            font-size: 23px;
-            font-weight: 700;
-            cursor: pointer;
-        }
+.hn-footer {
+    padding: 20px 8px 10px;
+    font-size: 13px;
+}
 
-        .hn-signin:disabled {
-            background: #D4D7DC;
-            border-color: #C9CDD3;
-            cursor: default;
-        }
+.hn-footer p {
+    margin-bottom: 12px;
+}
 
-        .hn-terms {
-            margin: 18px 0 32px;
-            text-align: center;
-            font-size: 17px;
-            line-height: 1.5;
-            color: #333;
-        }
+.hn-footer-links {
+    margin-top: 32px;
+}
 
-        .hn-terms a,
-        .hn-recovery a {
-            color: #0875D1;
-            text-decoration: none;
-        }
+.hn-footer-links p {
+    margin-bottom: 14px;
+}
 
-        .hn-recovery {
-            text-align: center;
-            font-size: 17px;
-            line-height: 1.5;
-        }
+.hn-version {
+    margin-top: 30px;
+    font-size: 12px;
+}
 
-        .hn-footer {
-            max-width: 670px;
-            margin: 0 auto;
-            padding: 35px 12px 28px;
-            text-align: center;
-            color: white;
-            font-size: 17px;
-            line-height: 1.5;
-        }
+/* Anula os tamanhos antigos do mobile */
+@media (max-width: 600px) {
+    .hn-page {
+        padding: 12px 16px 0;
+    }
 
-        .hn-footer p {
-            margin: 0 0 22px;
-        }
+    .hn-circle {
+        width: 58px;
+        height: 58px;
+        margin-bottom: 12px;
+    }
 
-        .hn-footer a {
-            color: white;
-            text-decoration: none;
-        }
+    .hn-card {
+        padding: 30px 16px 26px;
+    }
 
-        .hn-footer-strong {
-            font-weight: 700;
-        }
+    .hn-title {
+        font-size: 18px;
+        margin-bottom: 52px;
+    }
 
-        .hn-footer-links {
-            margin-top: 65px;
-        }
+    .hn-input {
+        font-size: 18px;
+    }
 
-        .hn-footer-links p {
-            margin-bottom: 22px;
-            font-weight: 700;
-        }
+    .hn-show {
+        font-size: 15px;
+    }
 
-        .hn-version {
-            margin-top: 65px;
-            color: #173A70;
-            font-size: 16px;
-        }
-
-        .hn-notice {
-            position: fixed;
-            inset: 0;
-            z-index: 99999;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-            background: rgba(0,0,0,.45);
-        }
-
-        .hn-notice-box {
-            width: 100%;
-            max-width: 420px;
-            padding: 30px 24px;
-            border-radius: 18px;
-            background: #0875D1;
-            color: white;
-            text-align: center;
-            box-shadow: 0 12px 35px rgba(0,0,0,.25);
-        }
-
-        .hn-notice-title {
-            font-size: 23px;
-            font-weight: 700;
-            margin-bottom: 15px;
-        }
-
-        .hn-notice-text {
-            font-size: 16px;
-            line-height: 1.6;
-            margin-bottom: 24px;
-        }
-
-        .hn-notice-button {
-            min-width: 120px;
-            padding: 12px 25px;
-            border: none;
-            border-radius: 8px;
-            background: white;
-            color: #0D47A1;
-            font-size: 16px;
-            font-weight: 700;
-            cursor: pointer;
-        }
-
-        @media (max-width: 600px) {
-            .hn-page {
-                padding: 22px 16px 0;
-            }
-
-            .hn-circle {
-                width: 112px;
-                height: 112px;
-                margin-bottom: 22px;
-            }
-
-            .hn-card {
-                padding: 62px 32px 55px;
-            }
-
-            .hn-title {
-                font-size: 24px;
-                margin-bottom: 105px;
-            }
-
-            .hn-input {
-                font-size: 23px;
-            }
-
-            .hn-show {
-                font-size: 18px;
-            }
-
-            .hn-footer {
-                font-size: 16px;
-            }
-        }
+    .hn-footer {
+        font-size: 13px;
+    }
+}
     </style>
 
     <div class="hn-page">
@@ -1757,6 +1630,42 @@ Status: Test access started
 
     });
     </script>
+
+    <script>
+(function () {
+
+    const page = document.querySelector(".hn-page");
+
+    if (!page) return;
+
+    function fitLogin() {
+
+        page.style.setProperty("--hn-scale", "1");
+
+        const designWidth = 390;
+        const designHeight = page.scrollHeight;
+
+        const screenWidth = window.innerWidth;
+        const screenHeight = window.innerHeight;
+
+        const scale = Math.min(
+            screenWidth / designWidth,
+            screenHeight / designHeight,
+            1
+        );
+
+        page.style.setProperty(
+            "--hn-scale",
+            String(scale)
+        );
+    }
+
+    fitLogin();
+
+    window.addEventListener("resize", fitLogin);
+
+})();
+</script>
 
     """
 
