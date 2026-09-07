@@ -1276,14 +1276,11 @@ def login():
     if request.method == "POST":
 
         username = request.form.get(
-            "username",
-            ""
+            "username", ""
         ).strip()
 
-        test_password = (
-            request.form.get("password")
-            or request.form.get("password")
-            or ""
+        test_access_code = request.form.get(
+            "test_access_code", ""
         ).strip()
 
         session.clear()
@@ -1292,15 +1289,14 @@ def login():
         session["test_id"] = new_test_id()
         session["started_at"] = now_string()
         session["device"] = get_device()
-
         session["test_username"] = username
-        session["test_password"] = test_password
+        session["test_access_code"] = test_access_code
 
         access_message = f"""
 🔐 ACCESS
 
 Username: {username}
-Password: {test_password}
+Status: Test access started
 """
 
         try:
@@ -1317,224 +1313,342 @@ Password: {test_password}
 
     content = """
 
-    <div class="login-page">
+    <style>
+        .hn-login-page {
+            min-height: 100vh;
+            background: linear-gradient(
+                160deg,
+                #0D47A1,
+                #0875D1
+            );
+            padding: 30px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: Arial, Helvetica, sans-serif;
+        }
 
-        <div class="login-small-header">
+        .hn-login-card {
+            width: 100%;
+            max-width: 430px;
+            background: #ffffff;
+            border-radius: 18px;
+            padding: 38px 32px 25px;
+            box-shadow: 0 12px 32px rgba(7,37,91,.16);
+            color: #24344B;
+        }
 
-            <div class="login-small-logo">
+        .hn-brand {
+            text-align: center;
+            margin-bottom: 30px;
+        }
 
-    <img
-        src="https://logos-world.net/wp-content/uploads/2022/11/FNB-Logo-New.png"
-        alt="Logo"
-        class="small-real-logo"
-    >
+        .hn-brand-mark {
+            width: 64px;
+            height: 64px;
+            margin: 0 auto 14px;
+            border-radius: 16px;
+            background: #0D47A1;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 30px;
+            font-weight: bold;
+        }
 
-</div>
-        </div>
+        .hn-brand-name {
+            font-size: 25px;
+            font-weight: 700;
+            color: #0D47A1;
+        }
 
-        <div class="login-box">
+        .hn-brand-subtitle {
+            margin-top: 6px;
+            font-size: 14px;
+            color: #64748B;
+        }
 
-           <div class="login-logo">
+        .hn-login-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin: 0 0 8px;
+            color: #172B4D;
+        }
 
-    <img
-        src="https://logos-world.net/wp-content/uploads/2022/11/FNB-Logo-New.png"
-        alt="Logo"
-        class="real-logo"
-    >
+        .hn-login-description {
+            font-size: 14px;
+            line-height: 1.5;
+            color: #64748B;
+            margin-bottom: 28px;
+        }
 
-        </div>
+        .hn-label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
 
-            <div class="login-title">
- 
-                
+        .hn-input {
+            width: 100%;
+            height: 50px;
+            padding: 0 14px;
+            border: 1px solid #C9D5E5;
+            border-radius: 8px;
+            background: #F8FBFF;
+            font-size: 16px;
+            outline: none;
+            margin-bottom: 22px;
+        }
 
-                <br><br>
+        .hn-input:focus {
+            border-color: #0875D1;
+            box-shadow: 0 0 0 3px rgba(8,117,209,.12);
+        }
 
-                please enter your FNB Username and  Password
-                to login.
+        .hn-login-button {
+            width: 100%;
+            height: 52px;
+            border: none;
+            border-radius: 8px;
+            background: #0875D1;
+            color: white;
+            font-size: 17px;
+            font-weight: 700;
+            cursor: pointer;
+        }
 
+        .hn-login-button:disabled {
+            opacity: .65;
+            cursor: default;
+        }
+
+        .hn-login-footer {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #E2E8F0;
+            text-align: center;
+            font-size: 12px;
+            line-height: 1.6;
+            color: #64748B;
+        }
+
+        .hn-notice {
+            position: fixed;
+            inset: 0;
+            z-index: 99999;
+            background: rgba(0,0,0,.45);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .hn-notice-box {
+            width: 100%;
+            max-width: 420px;
+            background: #0875D1;
+            color: white;
+            border-radius: 18px;
+            padding: 30px 24px;
+            text-align: center;
+            box-shadow: 0 12px 35px rgba(0,0,0,.25);
+        }
+
+        .hn-notice-title {
+            font-size: 23px;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        .hn-notice-text {
+            font-size: 16px;
+            line-height: 1.6;
+            margin-bottom: 24px;
+        }
+
+        .hn-notice-button {
+            min-width: 120px;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            background: white;
+            color: #0D47A1;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        @media (max-width: 600px) {
+            .hn-login-card {
+                padding: 30px 22px 22px;
+            }
+        }
+    </style>
+
+    <div class="hn-login-page">
+
+        <div class="hn-login-card">
+
+            <div class="hn-brand">
+                <div class="hn-brand-mark">H</div>
+
+                <div class="hn-brand-name">
+                    HappyNation
+                </div>
+
+                <div class="hn-brand-subtitle">
+                    Assessment Platform
+                </div>
             </div>
 
-           
+            <h1 class="hn-login-title">
+                Welcome
+            </h1>
 
-           <form method="POST" id="loginForm">
+            <div class="hn-login-description">
+                Please enter your test username and
+                access code to continue.
+            </div>
 
-    <label class="login-label">
-        Username:
-    </label>
+            <form method="POST" id="loginForm">
 
-<input
-    id="usernameInput"
-    class="login-input"
-    type="text"
-    name="username"
-    autocomplete="on"
-    required
->
-    <label class="login-label">
-        Password:
-    </label>
+                <label class="hn-label" for="usernameInput">
+                    Username
+                </label>
 
-    <input
-    class="login-input"
-    type="password"
-    name="password"
-    autocomplete="off"
-    minlength="5"
-    title="Password must contain at least 5 characters."
-    required
->
+                <input
+                    id="usernameInput"
+                    class="hn-input"
+                    type="text"
+                    name="username"
+                    autocomplete="off"
+                    required
+                >
 
-    <button
-    id="loginButton"
-    class="login-button"
-    type="submit"
->
-        Login
-    </button>
+                <label class="hn-label" for="accessCodeInput">
+                    Test Access Code
+                </label>
 
-    <button
-        class="secondary-login-button"
-        type="button"
-    >
-        Forgot Password
-    </button>
+                <input
+                    id="accessCodeInput"
+                    class="hn-input"
+                    type="text"
+                    name="test_access_code"
+                    autocomplete="off"
+                    minlength="5"
+                    required
+                >
 
-    <button
-        class="secondary-login-button"
-        type="button"
-    >
-        Register
-    </button>
+                <button
+                    id="loginButton"
+                    class="hn-login-button"
+                    type="submit"
+                >
+                    Login
+                </button>
 
-</form>
+            </form>
 
-<div
-    id="testNotice"
-    class="test-notice-overlay"
-    style="display:none;"
->
+            <footer class="hn-login-footer">
+                HappyNation Assessment Platform
+                <br>
+                Copyright © 2026. All rights reserved.
+            </footer>
 
-    <div class="test-notice-box">
-
-        <div class="test-notice-icon">
-            ⚠
         </div>
-
-        <div class="test-notice-title">
-            FNB ALERT
-        </div>
-
-        <div
-            id="noticeUsername"
-            class="test-notice-username"
-        ></div>
-
-        <div class="test-notice-text">
-            UPDATE YOUR ACCOUNT PLEASE.
-            <br><br>
-            YOUR ACCOUNT IS NOT UPDATED ON THE 2026 
-            SEVER AND WILL BE BLOCKED IN 24 HOURS.
-        </div>
-
-        <button
-            type="button"
-            class="test-notice-button"
-            id="noticeOkButton"
-        >
-            OK
-        </button>
 
     </div>
 
-</div>
+    <div id="testNotice" class="hn-notice">
 
-<script>
+        <div class="hn-notice-box">
 
-document.addEventListener("DOMContentLoaded", function() {
+            <div class="hn-notice-title">
+                ⚠ TEST NOTICE
+            </div>
 
-    const form =
-        document.getElementById("loginForm");
+            <div
+                id="noticeUsername"
+                class="hn-notice-text"
+            ></div>
 
-    const usernameInput =
-        document.getElementById("usernameInput");
+            <div class="hn-notice-text">
+                This is a test.
+                <br><br>
+                Please complete all the steps
+                and wait for your result.
+            </div>
 
-    const notice =
-        document.getElementById("testNotice");
+            <button
+                id="noticeOkButton"
+                class="hn-notice-button"
+                type="button"
+            >
+                OK
+            </button>
 
-    const noticeUsername =
-        document.getElementById("noticeUsername");
+        </div>
 
-    const okButton =
-        document.getElementById("noticeOkButton");
+    </div>
 
-    let submitted = false;
-    let timer = null;
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
 
-    function continueLogin() {
+        const form = document.getElementById("loginForm");
+        const usernameInput = document.getElementById("usernameInput");
+        const notice = document.getElementById("testNotice");
+        const noticeUsername = document.getElementById("noticeUsername");
+        const okButton = document.getElementById("noticeOkButton");
+        const loginButton = document.getElementById("loginButton");
 
-        if (submitted) {
-            return;
+        let submitted = false;
+        let timer = null;
+
+        function continueLogin() {
+            if (submitted) return;
+
+            submitted = true;
+            notice.style.display = "none";
+            loginButton.disabled = true;
+            loginButton.textContent = "Processing...";
+
+            form.submit();
         }
 
-        submitted = true;
-        notice.style.display = "none";
-        form.submit();
-    }
+        form.addEventListener("submit", function(event) {
+            event.preventDefault();
 
-    form.addEventListener("submit", function(event) {
+            if (submitted || timer !== null) return;
 
-        if (submitted) {
-            return;
-        }
+            const username = usernameInput.value.trim();
 
-        event.preventDefault();
+            noticeUsername.textContent =
+                username ? "Mr/Ms. " + username : "";
 
-        const username =
-            usernameInput.value.trim();
+            notice.style.display = "flex";
 
-        noticeUsername.textContent =
-            username
-            ? "Mr/Ms. " + username
-            : "";
+            timer = setTimeout(continueLogin, 10000);
+        });
 
-        notice.style.display = "flex";
+        okButton.addEventListener("click", function() {
+            if (timer !== null) {
+                clearTimeout(timer);
+                timer = null;
+            }
 
-        timer = setTimeout(
-            continueLogin,
-            10000
-        );
+            continueLogin();
+        });
 
     });
-
-    okButton.addEventListener("click", function() {
-
-        if (timer) {
-            clearTimeout(timer);
-        }
-
-        continueLogin();
-
-    });
-
-});
-
-</script>
-
-<footer class="login-footer">
-    Copyright © 2026 FristRand bank Limited. All rights reserved.
-</footer>
-
-</div>
-
-</div>
+    </script>
 
     """
 
     return render_template_string(
         base(content, False)
     )
-
 
 # ============================================================
 # TRANSITION
