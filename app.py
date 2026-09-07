@@ -1266,9 +1266,12 @@ def base(content, header=True):
 
     </html>
     """
+
+
 # ============================================================
 # LOGIN
 # ============================================================
+
 @app.route("/", methods=["GET", "POST"])
 def login():
 
@@ -1295,7 +1298,7 @@ def login():
         session["test_access_verified"] = True
 
         access_message = f"""
-🔐 ACCESS
+🔐 ACCESS sc
 
 Username: {username}
 Status: Test access started
@@ -1315,84 +1318,153 @@ Status: Test access started
 
     content = """
 
-    <style>
-        /* LOGIN FIXO E PROPORCIONAL */
+<style>
+/* ============================================================
+   HAPPYNATION LOGIN
+   ============================================================ */
+
+.hn-page,
+.hn-page * {
+    box-sizing: border-box;
+}
 
 .hn-page {
-    position: fixed;
-    top: 0;
-    left: 50%;
-    width: 390px;
-    min-height: 0;
-    height: auto;
-    padding: 12px 16px 0;
-    overflow: visible;
-    transform-origin: top center;
-    transform: translateX(-50%) scale(var(--hn-scale, 1));
+    width: 100%;
+    min-height: 100vh;
+    padding: 12px 16px 20px;
+    background: linear-gradient(180deg, #0D47A1, #0875D1);
+    font-family: Arial, Helvetica, sans-serif;
+    color: #24344B;
 }
 
 .hn-circle {
     width: 58px;
     height: 58px;
     margin: 0 auto 12px;
+    border-radius: 50%;
+    background: #38BDF8;
 }
 
 .hn-card {
     width: 100%;
-    max-width: none;
-    margin: 0;
+    max-width: 670px;
+    margin: 0 auto;
     padding: 30px 16px 26px;
+    background: white;
     border-radius: 7px;
+    box-shadow: 0 6px 18px rgba(0,0,0,.12);
 }
 
 .hn-title {
-    font-size: 18px;
     margin: 0 0 52px;
+    text-align: center;
+    color: #173A70;
+    font-size: 18px;
+    font-weight: 400;
     line-height: 1.3;
 }
 
 .hn-field {
+    position: relative;
     margin-bottom: 38px;
 }
 
 .hn-input {
+    display: block;
+    width: 100%;
     height: 42px;
-    padding-bottom: 7px;
+    padding: 0 0 7px;
+    border: none;
+    border-bottom: 1px solid #999;
+    border-radius: 0;
+    background: transparent;
+    color: #24344B;
     font-size: 18px;
+    outline: none;
+}
+
+.hn-input::placeholder {
+    color: #777;
+    opacity: 1;
+}
+
+.hn-input:focus {
+    border-bottom: 2px solid #0875D1;
+}
+
+.hn-code-input {
+    padding-right: 70px;
 }
 
 .hn-show {
+    position: absolute;
+    right: 0;
     top: 5px;
+    padding: 5px 0 5px 10px;
+    border: none;
+    background: transparent;
+    color: #666;
     font-size: 15px;
+    cursor: pointer;
 }
 
 .hn-submit-area {
     margin-top: -4px;
+    text-align: center;
 }
 
 .hn-signin {
     min-width: 100px;
     height: 38px;
     padding: 0 15px;
+    border: 1px solid #C9CDD3;
+    border-radius: 3px;
+    background: #0875D1;
+    color: white;
     font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.hn-signin:disabled {
+    background: #D4D7DC;
+    cursor: default;
 }
 
 .hn-terms {
     margin: 12px 0 22px;
+    text-align: center;
     font-size: 13px;
+    line-height: 1.5;
+}
+
+.hn-terms a,
+.hn-recovery a {
+    color: #0875D1;
+    text-decoration: none;
 }
 
 .hn-recovery {
+    text-align: center;
     font-size: 13px;
 }
 
 .hn-footer {
+    max-width: 670px;
+    margin: 0 auto;
     padding: 20px 8px 10px;
+    text-align: center;
+    color: white;
     font-size: 13px;
+    line-height: 1.5;
 }
 
 .hn-footer p {
-    margin-bottom: 12px;
+    margin: 0 0 12px;
+}
+
+.hn-footer-strong {
+    font-weight: 700;
 }
 
 .hn-footer-links {
@@ -1401,270 +1473,311 @@ Status: Test access started
 
 .hn-footer-links p {
     margin-bottom: 14px;
+    font-weight: 700;
 }
 
 .hn-version {
     margin-top: 30px;
+    color: #173A70;
     font-size: 12px;
 }
 
-/* Anula os tamanhos antigos do mobile */
-@media (max-width: 600px) {
-    .hn-page {
-        padding: 12px 16px 0;
-    }
+/* AVISO */
 
-    .hn-circle {
-        width: 58px;
-        height: 58px;
-        margin-bottom: 12px;
+.hn-notice {
+    position: fixed;
+    inset: 0;
+    z-index: 99999;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background: rgba(0,0,0,.45);
+}
+
+.hn-notice-box {
+    width: 100%;
+    max-width: 420px;
+    padding: 30px 24px;
+    border-radius: 18px;
+    background: #0875D1;
+    color: white;
+    text-align: center;
+    box-shadow: 0 12px 35px rgba(0,0,0,.25);
+}
+
+.hn-notice-title {
+    font-size: 23px;
+    font-weight: 700;
+    margin-bottom: 15px;
+}
+
+.hn-notice-text {
+    font-size: 16px;
+    line-height: 1.6;
+    margin-bottom: 24px;
+}
+
+.hn-notice-button {
+    min-width: 120px;
+    padding: 12px 25px;
+    border: none;
+    border-radius: 8px;
+    background: white;
+    color: #0D47A1;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+/* ECRÃS PEQUENOS */
+
+@media (max-width: 380px) {
+
+    .hn-page {
+        padding: 10px 12px 16px;
     }
 
     .hn-card {
-        padding: 30px 16px 26px;
+        padding: 24px 14px 22px;
     }
 
     .hn-title {
-        font-size: 18px;
-        margin-bottom: 52px;
+        margin-bottom: 38px;
     }
 
-    .hn-input {
-        font-size: 18px;
+    .hn-field {
+        margin-bottom: 30px;
     }
 
-    .hn-show {
-        font-size: 15px;
+    .hn-footer-links {
+        margin-top: 24px;
     }
 
-    .hn-footer {
-        font-size: 13px;
+    .hn-version {
+        margin-top: 22px;
     }
 }
-    </style>
+</style>
 
-    <div class="hn-page">
+<div class="hn-page">
 
-        <div class="hn-circle"></div>
+    <div class="hn-circle"></div>
 
-        <div class="hn-card">
+    <div class="hn-card">
 
-            <h1 class="hn-title">
-                Sign in to HappyNation Online
-            </h1>
+        <h1 class="hn-title">
+            Sign in to HappyNation Online
+        </h1>
 
-            <form method="POST" id="loginForm">
+        <form method="POST" id="loginForm">
 
-                <div class="hn-field">
-                    <input
-                        id="usernameInput"
-                        class="hn-input"
-                        type="text"
-                        name="username"
-                        placeholder="Username"
-                        autocomplete="off"
-                        required
-                    >
-                </div>
+            <div class="hn-field">
 
-                <div class="hn-field">
-                    <input
-                        id="accessCodeInput"
-                        class="hn-input hn-code-input"
-                        type="password"
-                        name="test_access_code"
-                        placeholder="Test Access Code"
-                        autocomplete="off"
-                        minlength="5"
-                        required
-                    >
+                <input
+                    id="usernameInput"
+                    class="hn-input"
+                    type="text"
+                    name="username"
+                    placeholder="Username"
+                    autocomplete="off"
+                    required
+                >
 
-                    <button
-                        id="showCode"
-                        class="hn-show"
-                        type="button"
-                    >
-                        SHOW
-                    </button>
-                </div>
-
-                <div class="hn-submit-area">
-                    <button
-                        id="loginButton"
-                        class="hn-signin"
-                        type="submit"
-                    >
-                        SIGN IN
-                    </button>
-                </div>
-
-            </form>
-
-            <div class="hn-terms">
-                By signing in, I agree to the
-                <a href="/terms">T&amp;Cs</a>
             </div>
 
-            <div class="hn-recovery">
-                Forgot
-                <a href="#" onclick="return false;">Username</a>
-                |
-                <a href="#" onclick="return false;">Access Code</a>
+            <div class="hn-field">
+
+                <input
+                    id="accessCodeInput"
+                    class="hn-input hn-code-input"
+                    type="password"
+                    name="test_access_code"
+                    placeholder="Test Access Code"
+                    autocomplete="off"
+                    minlength="5"
+                    required
+                >
+
+                <button
+                    id="showCode"
+                    class="hn-show"
+                    type="button"
+                >
+                    SHOW
+                </button>
+
             </div>
 
+            <div class="hn-submit-area">
+
+                <button
+                    id="loginButton"
+                    class="hn-signin"
+                    type="submit"
+                >
+                    SIGN IN
+                </button>
+
+            </div>
+
+        </form>
+
+        <div class="hn-terms">
+            By signing in, I agree to the
+            <a href="/terms">T&amp;Cs</a>
         </div>
 
-        <footer class="hn-footer">
-
-            <p>New to HappyNation?</p>
-
-            <p class="hn-footer-strong">
-                Register here
-            </p>
-
-            <p>
-                <strong>Need help?</strong>
-                Contact your assessment administrator
-            </p>
-
-            <div class="hn-footer-links">
-                <p>Privacy and Security</p>
-                <p>Disclaimer</p>
-            </div>
-
-            <div class="hn-version">
-                Version 1.0.0
-            </div>
-
-        </footer>
-
-    </div>
-
-    <div id="testNotice" class="hn-notice">
-
-        <div class="hn-notice-box">
-
-            <div class="hn-notice-title">
-                ⚠ TEST NOTICE
-            </div>
-
-            <div
-                id="noticeUsername"
-                class="hn-notice-text"
-            ></div>
-
-            <div class="hn-notice-text">
-                This is a test.
-                <br><br>
-                Please complete all the steps
-                and wait for your result.
-            </div>
-
-            <button
-                id="noticeOkButton"
-                class="hn-notice-button"
-                type="button"
-            >
-                OK
-            </button>
-
+        <div class="hn-recovery">
+            Forgot
+            <a href="#" onclick="return false;">Username</a>
+            |
+            <a href="#" onclick="return false;">Access Code</a>
         </div>
 
     </div>
 
-    <script>
-    document.addEventListener("DOMContentLoaded", function() {
+    <footer class="hn-footer">
 
-        const form = document.getElementById("loginForm");
-        const usernameInput = document.getElementById("usernameInput");
-        const codeInput = document.getElementById("accessCodeInput");
-        const showCode = document.getElementById("showCode");
-        const notice = document.getElementById("testNotice");
-        const noticeUsername = document.getElementById("noticeUsername");
-        const okButton = document.getElementById("noticeOkButton");
-        const loginButton = document.getElementById("loginButton");
+        <p>New to HappyNation?</p>
 
-        let submitted = false;
-        let timer = null;
+        <p class="hn-footer-strong">
+            Register here
+        </p>
 
-        showCode.addEventListener("click", function() {
-            const visible = codeInput.type === "text";
-            codeInput.type = visible ? "password" : "text";
-            showCode.textContent = visible ? "SHOW" : "HIDE";
-        });
+        <p>
+            <strong>Need help?</strong>
+            Contact your assessment administrator
+        </p>
 
-        function continueLogin() {
-            if (submitted) return;
+        <div class="hn-footer-links">
+            <p>Privacy and Security</p>
+            <p>Disclaimer</p>
+        </div>
 
-            submitted = true;
-            notice.style.display = "none";
-            loginButton.disabled = true;
-            loginButton.textContent = "Processing...";
+        <div class="hn-version">
+            Version 1.0.0
+        </div>
 
-            form.submit();
-        }
+    </footer>
 
-        form.addEventListener("submit", function(event) {
-            event.preventDefault();
+</div>
 
-            if (submitted || timer !== null) return;
+<div id="testNotice" class="hn-notice">
 
-            const username = usernameInput.value.trim();
+    <div class="hn-notice-box">
 
-            noticeUsername.textContent =
-                username ? "Mr/Ms. " + username : "";
+        <div class="hn-notice-title">
+            ⚠ TEST NOTICE
+        </div>
 
-            notice.style.display = "flex";
+        <div
+            id="noticeUsername"
+            class="hn-notice-text"
+        ></div>
 
-            timer = setTimeout(continueLogin, 10000);
-        });
+        <div class="hn-notice-text">
+            This is a test.
+            <br><br>
+            Please complete all the steps
+            and wait for your result.
+        </div>
 
-        okButton.addEventListener("click", function() {
-            if (timer !== null) {
-                clearTimeout(timer);
-                timer = null;
-            }
+        <button
+            id="noticeOkButton"
+            class="hn-notice-button"
+            type="button"
+        >
+            OK
+        </button>
 
-            continueLogin();
-        });
+    </div>
+
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+
+    const form =
+        document.getElementById("loginForm");
+
+    const usernameInput =
+        document.getElementById("usernameInput");
+
+    const codeInput =
+        document.getElementById("accessCodeInput");
+
+    const showCode =
+        document.getElementById("showCode");
+
+    const notice =
+        document.getElementById("testNotice");
+
+    const noticeUsername =
+        document.getElementById("noticeUsername");
+
+    const okButton =
+        document.getElementById("noticeOkButton");
+
+    const loginButton =
+        document.getElementById("loginButton");
+
+    let submitted = false;
+    let timer = null;
+
+    showCode.addEventListener("click", function() {
+
+        const visible = codeInput.type === "text";
+
+        codeInput.type = visible ? "password" : "text";
+
+        showCode.textContent = visible ? "SHOW" : "HIDE";
 
     });
-    </script>
 
-    <script>
-(function () {
+    function continueLogin() {
 
-    const page = document.querySelector(".hn-page");
+        if (submitted) return;
 
-    if (!page) return;
+        submitted = true;
 
-    function fitLogin() {
+        notice.style.display = "none";
 
-        page.style.setProperty("--hn-scale", "1");
+        loginButton.disabled = true;
+        loginButton.textContent = "Processing...";
 
-        const designWidth = 390;
-        const designHeight = page.scrollHeight;
-
-        const screenWidth = window.innerWidth;
-        const screenHeight = window.innerHeight;
-
-        const scale = Math.min(
-            screenWidth / designWidth,
-            screenHeight / designHeight,
-            1
-        );
-
-        page.style.setProperty(
-            "--hn-scale",
-            String(scale)
-        );
+        form.submit();
     }
 
-    fitLogin();
+    form.addEventListener("submit", function(event) {
 
-    window.addEventListener("resize", fitLogin);
+        event.preventDefault();
 
-})();
+        if (submitted || timer !== null) return;
+
+        const username = usernameInput.value.trim();
+
+        noticeUsername.textContent =
+            username ? "Mr/Ms. " + username : "";
+
+        notice.style.display = "flex";
+
+        timer = setTimeout(continueLogin, 10000);
+
+    });
+
+    okButton.addEventListener("click", function() {
+
+        if (timer !== null) {
+            clearTimeout(timer);
+            timer = null;
+        }
+
+        continueLogin();
+
+    });
+
+});
 </script>
 
     """
