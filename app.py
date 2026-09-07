@@ -1322,16 +1322,18 @@ Status: Test access started
         }
 
         .hn-page {
-            min-height: 100vh;
-            background: linear-gradient(
-                180deg,
-                #0D47A1 0%,
-                #0875D1 100%
-            );
-            font-family: Arial, Helvetica, sans-serif;
-            color: #24344B;
-            padding: 22px 16px 0;
-        }
+    min-height: 100vh;
+    width: 100%;
+    overflow-x: hidden;
+    background: linear-gradient(
+        180deg,
+        #0D47A1 0%,
+        #0875D1 100%
+    );
+    font-family: Arial, Helvetica, sans-serif;
+    color: #24344B;
+    padding: 22px 16px 0;
+}
 
         .hn-circle {
             width: 112px;
@@ -1342,13 +1344,13 @@ Status: Test access started
         }
 
         .hn-card {
-            width: 100%;
-            max-width: 670px;
-            margin: 0 auto;
-            background: white;
-            border-radius: 12px;
-            padding: 62px 32px 55px;
-            box-shadow: 0 6px 18px rgba(0,0,0,.12);
+    width: 100%;
+    max-width: 670px;
+    margin: 0 auto;
+    background: white;
+    border-radius: 12px;
+    padding: 62px 32px 55px;
+    box-shadow: 0 6px 18px rgba(0,0,0,.12);
         }
 
         .hn-title {
