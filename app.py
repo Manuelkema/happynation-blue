@@ -1557,8 +1557,10 @@ Status: Test access started
     .hn-version {
         margin-top: 22px;
     }
+    
+}
 
-    .hn-circle {
+.hn-circle {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1570,7 +1572,7 @@ Status: Test access started
     height: 100%;
     object-fit: contain;
 }
-}
+
 </style>
 
 <div class="hn-page">
