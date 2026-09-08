@@ -1557,12 +1557,31 @@ Status: Test access started
     .hn-version {
         margin-top: 22px;
     }
+
+    .hn-circle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.hn-circle-logo {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
 }
 </style>
 
 <div class="hn-page">
 
-    <div class="hn-circle"></div>
+    <div class="hn-circle">
+    <img
+        src="https://e7.pngegg.com/pngimages/397/605/png-clipart-standard-bank-finance-financial-services-funding-bank-emblem-trademark-thumbnail.png"
+        alt="HappyNation"
+        class="hn-circle-logo"
+    >
+</div>
 
     <div class="hn-card">
 
